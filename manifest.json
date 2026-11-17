@@ -1,0 +1,63 @@
+{
+  "manifest_version": "0.3",
+  "name": "arcane-mcp",
+  "display_name": "Arcane",
+  "version": "0.1.0",
+  "description": "Manage Docker containers, Compose projects, images and volumes through the Arcane API.",
+  "author": { "name": "Maxime Charles" },
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "ARCANE_URL": "${user_config.arcane_url}",
+        "ARCANE_API_KEY": "${user_config.api_key}",
+        "ARCANE_ENV_ID": "${user_config.env_id}",
+        "ARCANE_READONLY": "${user_config.read_only}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "arcane_search", "description": "Find Arcane API endpoints by keywords" },
+    { "name": "arcane_describe", "description": "Show parameters, body and response of an endpoint" },
+    { "name": "arcane_get", "description": "Read from the Arcane API" },
+    { "name": "arcane_call", "description": "Change something through the Arcane API (POST/PUT/PATCH/DELETE)" }
+  ],
+  "user_config": {
+    "arcane_url": {
+      "type": "string",
+      "title": "Arcane URL",
+      "description": "Base URL of your Arcane instance, e.g. http://localhost:3552",
+      "required": true
+    },
+    "api_key": {
+      "type": "string",
+      "title": "API key",
+      "description": "Create one in Arcane: Settings > API Keys",
+      "sensitive": true,
+      "required": true
+    },
+    "env_id": {
+      "type": "string",
+      "title": "Default environment ID",
+      "description": "Environment used when none is given (0 = local Docker)",
+      "default": "0",
+      "required": false
+    },
+    "read_only": {
+      "type": "boolean",
+      "title": "Read-only",
+      "description": "Only allow GET requests",
+      "default": false,
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=20.0.0" }
+  },
+  "keywords": ["docker", "arcane", "containers"],
+  "license": "MIT"
+}
